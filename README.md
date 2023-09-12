@@ -10,5 +10,6 @@ source venv/bin/activate
 python -m venv venv
 venv\Scripts\activate.bat
 
-#installando dependencias
+# instalando dependencias
+
 pip install -r requirements.txt
