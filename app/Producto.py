@@ -5,3 +5,6 @@ class Producto:
         self.cantidad_minima = ""
         self.correo_provedor = ""
         self.stock_pedido = 0
+    
+    def imprimir(self):
+        print(self.nombre)
