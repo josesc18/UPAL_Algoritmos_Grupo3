@@ -1,42 +1,87 @@
 from app.Database import ListaEnlazada
 from app.Producto import Producto
-
+from app.Notificaciones import Notificaciones
+from app.Mensaje import Mensaje
 # Crea instancias de las clases
 lista = ListaEnlazada()
-producto = Producto()
+notificaciones = Notificaciones()
 
-# Configura las propiedades del objeto Producto
-producto.cantidad = 50
-producto.cantidad_minima = 5
-producto.correo_provedor = "jose.sanchez.alu@upal.edu.pe"
-producto.nombre = "Ejemplo"
-producto.stock_pedido = 4
-
-producto2 = Producto()
-
-# Configura las propiedades del objeto Producto
-producto2.cantidad = 50
-producto2.cantidad_minima = 5
-producto2.correo_provedor = "jose.sanchez.alu@upal.edu.pe"
-producto2.nombre = "Ejemplo 2"
-producto2.stock_pedido = 4
+def mostrar_menu(opciones):
+    print('Seleccione una opción:')
+    for clave in sorted(opciones):
+        print(f' {clave}) {opciones[clave][0]}')
 
 
-producto3 = Producto()
+def leer_opcion(opciones):
+    while (a := input('Opción: ')) not in opciones:
+        print('Opción incorrecta, vuelva a intentarlo.')
+    return a
 
-# Configura las propiedades del objeto Producto
-producto3.cantidad = 50
-producto3.cantidad_minima = 5
-producto3.correo_provedor = "jose.sanchez.alu@upal.edu.pe"
-producto3.nombre = "Ejemplo 3"
-producto3.stock_pedido = 4
-# Inserta el producto en la lista enlazada
-lista.insertarAlFinal(producto)
-lista.insertarAlFinal(producto2)
-lista.insertarAlFinal(producto3)
-lista.imprimirNodos()
 
-lista.eliminarSegunValor("Ejemplo 2")
+def ejecutar_opcion(opcion, opciones):
+    opciones[opcion][1]()
 
-lista.imprimirNodos()
+
+def generar_menu(opciones, opcion_salida):
+    opcion = None
+    while opcion != opcion_salida:
+        mostrar_menu(opciones)
+        opcion = leer_opcion(opciones)
+        ejecutar_opcion(opcion, opciones)
+        print()
+
+
+def menu_principal():
+    opciones = {
+        '1': ('Registrar Producto', accion1),
+        '2': ('Vender Producto', accion2),
+        '3': ('Solicitar Stock', accion3),
+        '4': ('Salir', salir)
+    }
+
+    generar_menu(opciones, '4')
+
+
+def accion1():
+    producto = Producto()
+    producto.nombre = input("Ingrese una nombre del producto: ")
+    producto.cantidad = int(input("Ingrese una cantidad del producto: "))
+    lista.insertarAlFinal(producto)
+    print('Producto Registrado')
+    lista.imprimirNodos()
+
+def accion2():
+    nombre = input("Ingrese una nombre del producto: ")
+    cantidad = int(input("Ingrese cantidad a vender: "))
+    producto = lista.buscar_por_nombre(nombre)
+    producto_cantidad = producto.valor.cantidad
+
+    if(producto_cantidad >= cantidad):
+        nueva_cantidad = producto_cantidad - cantidad
+        lista.modificar_cantidad(nombre, nueva_cantidad)
+        producto = lista.buscar_por_nombre(nombre)
+        if(nueva_cantidad == 0 ):
+            agregar_producto = Producto()
+            agregar_producto.nombre = producto.valor.nombre
+            agregar_producto.cantidad = producto.valor.cantidad
+            queue = Mensaje()
+            queue.Producto = agregar_producto
+            queue.cantidad_solicitud = 20
+            notificaciones.enqueue(queue)
+               
+        print(f"El prodcuto {producto.valor.nombre} cuenta con un total de {producto.valor.cantidad} en stock")
+    else:
+        print("No tiene el stock suficiente para vender el producto")
+
+
+def accion3():
+    notificaciones.enviar_notificaciones()
+
+
+def salir():
+    print('Saliendo')
+
+
+if __name__ == '__main__':
+    menu_principal()
 

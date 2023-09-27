@@ -42,3 +42,25 @@ class ListaEnlazada:
         while nodo_actual is not None:
             nodo_actual.valor.imprimir()
             nodo_actual = nodo_actual.puntero
+
+    def modificar_cantidad(self, nombre_producto, nueva_cantidad):
+        nodo_actual = self.lista
+        while nodo_actual is not None:
+            if nodo_actual.valor.nombre == nombre_producto:
+                try:
+                    nueva_cantidad = int(nueva_cantidad)
+                    nodo_actual.valor.cantidad = nueva_cantidad
+                    return
+                except ValueError:
+                    print("Error: La cantidad debe ser un número entero.")
+                    return
+
+            nodo_actual = nodo_actual.puntero
+        print(f"No se encontró un producto con el nombre '{nombre_producto}'")
+    
+    def buscar_por_nombre(self, nombre_producto):
+        nodo_actual = self.lista
+        while nodo_actual is not None:
+            if nodo_actual.valor.nombre == nombre_producto:
+                return nodo_actual
+            nodo_actual = nodo_actual.puntero
