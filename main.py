@@ -34,12 +34,14 @@ def generar_menu(opciones, opcion_salida):
 def menu_principal():
     opciones = {
         '1': ('Registrar Producto', accion1),
-        '2': ('Vender Producto', accion2),
-        '3': ('Solicitar Stock', accion3),
-        '4': ('Salir', salir)
+        '2': ('Listar Productos', accion4),
+        '3': ('Vender Producto', accion2),
+        '4': ('Ver productos sin Stock', accion5),
+        '5': ('Solicitar Stock', accion3),
+        '6': ('Salir', salir)
     }
 
-    generar_menu(opciones, '4')
+    generar_menu(opciones, '6')
 
 
 def accion1():
@@ -77,6 +79,11 @@ def accion2():
 def accion3():
     notificaciones.enviar_notificaciones()
 
+def accion4():
+    lista.imprimirNodos()
+
+def accion5():
+    notificaciones.sin_stcok()
 
 def salir():
     print('Saliendo')

@@ -31,4 +31,11 @@ class Notificaciones:
             self.dequeue()
             nodo_actual = nodo_actual.puntero
             
+    def sin_stcok(self):
+        nodo_actual = self.head
+        while nodo_actual is not None:
+            nombre_producto = nodo_actual.valor.Producto.nombre
+            print(f"No se cuenta con estock del siguiente producto: {nombre_producto}")
+
+            nodo_actual = nodo_actual.puntero
 
